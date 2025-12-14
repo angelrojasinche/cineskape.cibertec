@@ -22,29 +22,30 @@ public class Conexion {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            // Railway usa SOLO esta variable
             String databaseUrl = System.getenv("DATABASE_URL");
 
             if (databaseUrl == null) {
                 throw new RuntimeException("DATABASE_URL no está definida");
             }
 
-            // Convertir mysql:// a jdbc:mysql://
-            String jdbcUrl = "jdbc:" + databaseUrl
-                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+            String jdbcUrl = databaseUrl.replace(
+                    "mysql://",
+                    "jdbc:mysql://"
+            ) + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
             Connection con = DriverManager.getConnection(jdbcUrl);
 
-            System.out.println("Conectado correctamente a MySQL (Railway)");
+            System.out.println("✅ Conectado correctamente a MySQL (Railway)");
             return con;
 
         } catch (Exception e) {
-            System.out.println("Error de conexión: " + e.getMessage());
+            System.out.println("❌ Error de conexión: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
 }
+
 
 
 
