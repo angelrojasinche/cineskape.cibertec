@@ -16,7 +16,6 @@ import java.sql.DriverManager;
 public class Conexion {
 
     public static Connection getConnection() {
-        Connection con = null;
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -27,18 +26,24 @@ public class Conexion {
             String user = System.getenv("MYSQL_USER");
             String password = System.getenv("MYSQL_PASSWORD");
 
+            System.out.println("HOST=" + host);
+            System.out.println("PORT=" + port);
+            System.out.println("DB=" + database);
+            System.out.println("USER=" + user);
+
             String url = "jdbc:mysql://" + host + ":" + port + "/" + database
-                       + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
-            con = DriverManager.getConnection(url, user, password);
+            Connection con = DriverManager.getConnection(url, user, password);
+            System.out.println("Conectado a MySQL en Railway");
 
-            System.out.println("✅ CONECTADO A MYSQL RAILWAY");
+            return con;
 
         } catch (Exception e) {
-            e.printStackTrace(); // 👈 MUY IMPORTANTE
+            System.out.println("Error de conexión:");
+            e.printStackTrace();
+            return null;
         }
-
-        return con;
     }
 }
 
