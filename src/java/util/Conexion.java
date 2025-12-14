@@ -13,39 +13,39 @@ import java.sql.DriverManager;
  */
 
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 public class Conexion {
 
     public static Connection getConnection() {
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            String host = System.getenv("MYSQL_HOST");
-            String port = System.getenv("MYSQL_PORT");
-            String database = System.getenv("MYSQL_DATABASE");
-            String user = System.getenv("MYSQL_USER");
-            String password = System.getenv("MYSQL_PASSWORD");
+            // Railway usa SOLO esta variable
+            String databaseUrl = System.getenv("DATABASE_URL");
 
-            System.out.println("HOST=" + host);
-            System.out.println("PORT=" + port);
-            System.out.println("DB=" + database);
-            System.out.println("USER=" + user);
+            if (databaseUrl == null) {
+                throw new RuntimeException("DATABASE_URL no está definida");
+            }
 
-            String url = "jdbc:mysql://" + host + ":" + port + "/" + database
+            // Convertir mysql:// a jdbc:mysql://
+            String jdbcUrl = "jdbc:" + databaseUrl
                     + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
-            Connection con = DriverManager.getConnection(url, user, password);
-            System.out.println("Conectado a MySQL en Railway");
+            Connection con = DriverManager.getConnection(jdbcUrl);
 
+            System.out.println("Conectado correctamente a MySQL (Railway)");
             return con;
 
         } catch (Exception e) {
-            System.out.println("Error de conexión:");
+            System.out.println("Error de conexión: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
 }
+
 
 
    
