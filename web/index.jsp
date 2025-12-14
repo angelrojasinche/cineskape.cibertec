@@ -25,16 +25,28 @@
             background: linear-gradient(180deg, #141414, #0b0b0b);
         }
 
-        h1 {
-    font-size: 2.8rem;
-    font-weight: 900;
-    color: #e50914;
-    letter-spacing: 4px;
-    text-shadow:
-        0 0 6px rgba(229,9,20,.6),
-        0 0 12px rgba(229,9,20,.4),
-        2px 2px 10px rgba(0,0,0,.8);
-}
+        .cine-title {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 3.8rem;
+            font-weight: 900;
+            letter-spacing: 7px;
+            color: #e50914;
+            text-transform: uppercase;
+            text-shadow:
+                0 0 10px rgba(229,9,20,.9),
+                0 0 20px rgba(229,9,20,.6),
+                0 0 35px rgba(229,9,20,.4),
+                4px 4px 14px rgba(0,0,0,.95);
+        }
+
+        .cine-subtitle {
+            font-size: 0.85rem;
+            letter-spacing: 6px;
+            color: #9ca3af;
+            margin-left: 70px;
+        }
 
         .btn-cine {
             background: linear-gradient(to right, #e50914, #ff4141);
@@ -42,53 +54,10 @@
             font-weight: bold;
         }
 
-        /* Inputs visibles en modal */
         #my_modal_1 input {
             background-color: #fff !important;
             color: #111 !important;
         }
-
-        #my_modal_1 label {
-            color: #facc15;
-            font-weight: bold;
-        }
-        
-        .cine-header {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.cine-title {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    font-size: 3.8rem;
-    font-weight: 900;
-    letter-spacing: 7px;
-    color: #e50914;
-    text-transform: uppercase;
-
-    text-shadow:
-        0 0 10px rgba(229,9,20,.9),
-        0 0 20px rgba(229,9,20,.6),
-        0 0 35px rgba(229,9,20,.4),
-        4px 4px 14px rgba(0,0,0,.95);
-}
-
-.cine-title i {
-    width: 52px;
-    height: 52px;
-    filter: drop-shadow(0 0 8px rgba(229,9,20,.8));
-}
-
-.cine-subtitle {
-    font-size: 0.85rem;
-    letter-spacing: 6px;
-    color: #9ca3af;
-    margin-left: 70px; /* alinea con el texto, no con el ícono */
-}
-
     </style>
 </head>
 
@@ -98,31 +67,27 @@
 
     <!-- HEADER -->
     <header class="flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
-        <div class="cine-header">
-    <h1 class="cine-title">
-        <i data-lucide="clapperboard"></i>
-        <span>CINESkAPE</span>
-        <i data-lucide="clapperboard"></i>
-    </h1>
-    <p class="cine-subtitle">CINE · SERIES · STREAMING</p>
-</div>
-
+        <div>
+            <h1 class="cine-title">
+                <i data-lucide="clapperboard"></i>
+                <span>CINESkAPE</span>
+                <i data-lucide="clapperboard"></i>
+            </h1>
+            <p class="cine-subtitle">CINE · SERIES · STREAMING</p>
+        </div>
 
         <div class="flex gap-4">
-            <input
-                id="buscador"
-                type="text"
-                placeholder="Buscar película..."
-                class="input input-bordered w-96 bg-white text-black"
-            >
+            <input id="buscador" type="text"
+                   placeholder="Buscar película..."
+                   class="input input-bordered w-96 bg-white text-black">
 
-            <button class="btn btn-cine px-6 text-base" onclick="abrirNuevo()">
+            <button class="btn btn-cine px-6" onclick="abrirNuevo()">
                 + Película
             </button>
         </div>
     </header>
 
-    <!-- GRID DE PELÍCULAS -->
+    <!-- GRID -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
 
         <%
@@ -131,17 +96,16 @@
                 for (Pelicula p : lista) {
         %>
 
-        <div class="pelicula-card card bg-neutral shadow-2xl hover:scale-105 transition duration-300">
+        <div class="pelicula-card card bg-neutral shadow-xl">
 
             <figure class="relative h-80 overflow-hidden group">
                 <img src="<%= p.getUrl_portada() %>"
                      class="w-full h-full object-cover"/>
 
-                <!-- Overlay -->
                 <div class="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100
                             flex items-center justify-center gap-4 transition">
 
-                    <!-- VER DETALLE -->
+                    <!-- DETALLE -->
                     <button class="btn btn-circle btn-primary btn-detalle"
                         data-titulo="<%= p.getTitulo() %>"
                         data-descripcion="<%= p.getDescripcion() %>"
@@ -181,20 +145,9 @@
                     <%= p.getAnio() %> · <%= p.getDuracion() %> min
                 </p>
 
-                <!-- RATING + PRECIO -->
-                <div class="flex items-center gap-3 mt-2">
-                    <div class="rating rating-sm">
-                        <input type="radio" class="mask mask-star-2 bg-yellow-400" checked />
-                        <input type="radio" class="mask mask-star-2 bg-yellow-400" checked />
-                        <input type="radio" class="mask mask-star-2 bg-yellow-400" checked />
-                        <input type="radio" class="mask mask-star-2 bg-yellow-400" />
-                        <input type="radio" class="mask mask-star-2 bg-yellow-400" />
-                    </div>
-
-                    <span class="text-yellow-400 font-semibold">
-                        S/ <%= p.getPrecio_alquiler() %>
-                    </span>
-                </div>
+                <p class="text-yellow-400 font-semibold mt-2">
+                    S/ <%= p.getPrecio_alquiler() %>
+                </p>
             </div>
         </div>
 
@@ -205,7 +158,7 @@
     </div>
 </main>
 
-<!-- MODAL CREAR / EDITAR -->
+<!-- MODAL -->
 <dialog id="my_modal_1" class="modal">
     <div class="modal-box bg-neutral text-white max-w-lg">
         <h3 class="text-xl font-bold mb-4" id="tituloModal">Nueva Película</h3>
@@ -214,49 +167,32 @@
             <input type="hidden" name="id_pelicula" id="id_pelicula">
 
             <label>Título</label>
-            <input name="titulo" id="titulo" class="input input-bordered w-full mb-2">
+            <input name="titulo" id="titulo" class="input input-bordered w-full mb-2" required>
 
             <label>Descripción</label>
-            <input name="descripcion" id="descripcion" class="input input-bordered w-full mb-2">
+            <input name="descripcion" id="descripcion" class="input input-bordered w-full mb-2" required>
 
             <label>Duración</label>
-            <input name="duracion" id="duracion" class="input input-bordered w-full mb-2">
+            <input type="number" name="duracion" id="duracion"
+                   class="input input-bordered w-full mb-2" required>
 
             <label>URL Portada</label>
-            <input name="url_portada" id="url_portada" class="input input-bordered w-full mb-2">
+            <input name="url_portada" id="url_portada"
+                   class="input input-bordered w-full mb-2" required>
 
             <label>Año</label>
-            <input name="anio" id="anio" class="input input-bordered w-full mb-2">
+            <input type="number" name="anio" id="anio"
+                   class="input input-bordered w-full mb-2" required>
 
             <label>Precio</label>
-            <input name="precio_alquiler" id="precio_alquiler" class="input input-bordered w-full mb-4">
+            <input type="number" step="0.01" name="precio_alquiler" id="precio_alquiler"
+                   class="input input-bordered w-full mb-4" required>
 
             <div class="modal-action">
                 <button type="button" class="btn" onclick="my_modal_1.close()">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Guardar</button>
             </div>
         </form>
-    </div>
-</dialog>
-
-<!-- MODAL DETALLE -->
-<dialog id="modalDetalle" class="modal">
-    <div class="modal-box bg-neutral text-white max-w-4xl">
-        <img id="d_img" class="w-full h-96 object-cover rounded mb-6">
-        <h2 id="d_titulo" class="text-3xl font-bold"></h2>
-        <p id="d_desc" class="mt-3 text-gray-300"></p>
-
-        <p class="mt-2 text-gray-400">
-            <span id="d_anio"></span> · <span id="d_duracion"></span> min
-        </p>
-
-        <p class="mt-4 text-yellow-400 text-xl font-bold">
-            S/ <span id="d_precio"></span>
-        </p>
-
-        <div class="modal-action">
-            <button class="btn" onclick="modalDetalle.close()">Cerrar</button>
-        </div>
     </div>
 </dialog>
 
@@ -297,19 +233,19 @@
 
     document.querySelectorAll(".btn-detalle").forEach(btn => {
         btn.onclick = () => {
-            d_img.src = btn.dataset.img;
-            d_titulo.innerText = btn.dataset.titulo;
-            d_desc.innerText = btn.dataset.descripcion;
-            d_anio.innerText = btn.dataset.anio;
-            d_duracion.innerText = btn.dataset.duracion;
-            d_precio.innerText = btn.dataset.precio;
-            modalDetalle.showModal();
+            alert(
+                btn.dataset.titulo + "\n" +
+                btn.dataset.descripcion + "\n" +
+                "Año: " + btn.dataset.anio +
+                " | Duración: " + btn.dataset.duracion + " min"
+            );
         };
     });
 </script>
 
 </body>
 </html>
+
 
 
 
